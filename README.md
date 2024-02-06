@@ -1,9 +1,6 @@
-# Vision Gauge
+# GeoTracker
 
-This is the Final assessment template for CASA0014 - Please use this template and edit the relevant sections to personalise.
-This section has a short introduction to what the application is
-
-## Use this README File 
+**GeoTracker** is an application designed to provide a platform for people to interact with geographic information in our daily activities. 
 
 Use this section to show us what your Mobile App is about.   Include a Screenshot to the App, link to the various frameworks you've used. Include your presentation video here that shows off your Mobile App.   Emojis are also fun to include 📱 😄
 
