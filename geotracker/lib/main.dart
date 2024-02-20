@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-
-import 'package:geotracker/gradient_container.dart';
+import 'package:geotracker/start_screen.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(
+  runApp(const Geotracker());
+}
+
+class Geotracker extends StatelessWidget {
+  const Geotracker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
       home: Scaffold(
-        body: GradientContainer(),
+        body: StartScreen(),
       ),
-    ),
-  );
+    );
+  } 
 }
