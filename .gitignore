@@ -2,3 +2,5 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+geotracker/lib/mapbox_token.dart
