@@ -18,7 +18,7 @@ class _StartPageState extends State<StartPage> {
     super.initState();
     displayPage = const LoadingPage();
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
       () => setState(() {
         displayPage = const HomePage();
       }),
