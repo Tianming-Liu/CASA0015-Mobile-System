@@ -31,7 +31,7 @@ class _StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: displayPage),
+      home: displayPage,
     );
   }
 }

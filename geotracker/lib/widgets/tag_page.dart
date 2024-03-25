@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geotracker/models/geotag.dart';
 import 'package:geotracker/widgets/geotag_list/geotag_list.dart';
+import 'package:geotracker/widgets/new_geotag.dart';
 
 class TagPage extends StatefulWidget {
   const TagPage({super.key});
@@ -25,15 +26,29 @@ class _TagPageState extends State<TagPage> {
     ),
   ];
 
+  void _addNewGeoTag() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => const NewGeoTag(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('The Chart'),
-        Expanded(
-          child: GeoTagList(geoTags: _storedTagPage),
-        ),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('History Records'),
+        actions: [
+          IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add))
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: GeoTagList(geoTags: _storedTagPage),
+          ),
+        ],
+      ),
     );
   }
 }

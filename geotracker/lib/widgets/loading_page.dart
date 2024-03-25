@@ -6,30 +6,32 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/images/logo2.png',
-              height: 300,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              'GO TRACK',
-              style: GoogleFonts.oswald(
-                fontSize: 50,
-                fontWeight: FontWeight.w600,
-                color: const Color.fromARGB(255, 189, 189, 189),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 255, 255, 255),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/images/logo2.png',
+                height: 300,
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                'GO TRACK',
+                style: GoogleFonts.oswald(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w600,
+                  color: const Color.fromARGB(255, 189, 189, 189),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
