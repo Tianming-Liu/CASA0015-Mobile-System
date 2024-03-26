@@ -4,3 +4,5 @@
 .LSOverride
 
 geotracker/lib/mapbox_token.dart
+
+geotracker/android/app/src/main/AndroidManifest.xml
