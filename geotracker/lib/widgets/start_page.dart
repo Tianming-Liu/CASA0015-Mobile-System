@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geotracker/widgets/loading_page.dart';
-import 'package:geotracker/widgets/home_page.dart';
 import 'package:geotracker/widgets/tag_page.dart';
 import 'dart:async';
 

@@ -49,6 +49,15 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // Setting for MAPS API KEY Loading
+        def localProperties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            localProperties.load(new FileInputStream(localPropertiesFile))
+        }
+        def mapsApiKey = localProperties.getProperty('MAPS_API_KEY', "")
+        manifestPlaceholders = [MAPS_API_KEY: mapsApiKey]
     }
 
     buildTypes {
