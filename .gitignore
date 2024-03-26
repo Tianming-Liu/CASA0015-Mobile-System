@@ -1,8 +1,10 @@
 # General
 .DS_Store
-.AppleDouble
-.LSOverride
+.vscode/
+.idea/
 
-geotracker/lib/mapbox_token.dart
+# Node
+node_modules/
 
-geotracker/android/app/src/main/AndroidManifest.xml
+# Logs
+*.log
