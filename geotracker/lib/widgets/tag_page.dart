@@ -3,6 +3,8 @@ import 'package:geotracker/models/geotag.dart';
 import 'package:geotracker/widgets/geotag_list/geotag_list.dart';
 import 'package:geotracker/widgets/new_geotag.dart';
 
+import 'package:geotracker/widgets/map_canvas.dart';
+
 class TagPage extends StatefulWidget {
   const TagPage({super.key});
 
@@ -47,6 +49,7 @@ class _TagPageState extends State<TagPage> {
           Expanded(
             child: GeoTagList(geoTags: _storedTagPage),
           ),
+          const MapCanvas(),
         ],
       ),
     );
