@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/release
 
 android/local.properties
+
+# Ignore IOS sensitive data
+ios/Runner/Keys.plist
