@@ -43,8 +43,8 @@ app.*.map.json
 /android/app/release
 
 android/local.properties
-# android/app/src/main/AndroidManifest.xml
+android/app/src/main/AndroidManifest.xml
 
 # Ignore IOS sensitive data
 ios/Runner/Keys.plist
-# ios/Runner/AppDelegate.swift
+ios/Runner/AppDelegate.swift
