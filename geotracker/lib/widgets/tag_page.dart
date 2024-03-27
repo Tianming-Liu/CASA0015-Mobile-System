@@ -46,10 +46,14 @@ class _TagPageState extends State<TagPage> {
       ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 400,
+            width: 350,
+            child: MapCanvas(),
+          ),
           Expanded(
             child: GeoTagList(geoTags: _storedTagPage),
           ),
-          const MapCanvas(),
         ],
       ),
     );

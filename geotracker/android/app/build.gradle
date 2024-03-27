@@ -22,9 +22,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
 android {
     namespace "cn.tianming.geotracker"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -45,19 +46,13 @@ android {
         applicationId "cn.tianming.geotracker"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 20
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        // Setting for MAPS API KEY Loading
-        def localProperties = new Properties()
-        def localPropertiesFile = rootProject.file('local.properties')
-        if (localPropertiesFile.exists()) {
-            localProperties.load(new FileInputStream(localPropertiesFile))
-        }
-        def mapsApiKey = localProperties.getProperty('MAPS_API_KEY', "")
-        manifestPlaceholders = [MAPS_API_KEY: mapsApiKey]
+        // // Setting for MAPS API KEY Loading
+        // manifestPlaceholders = [MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY')]
     }
 
     buildTypes {
