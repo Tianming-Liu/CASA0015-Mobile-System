@@ -46,10 +46,33 @@ class _TagPageState extends State<TagPage> {
       ),
       body: Column(
         children: [
-          const SizedBox(
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 0.5,
+                  color: Color.fromARGB(255, 125, 125, 125),
+                ),
+                top: BorderSide(
+                  width: 0.5,
+                  color: Color.fromARGB(255, 125, 125, 125),
+                ),
+                left: BorderSide(
+                  width: 0.5,
+                  color: Color.fromARGB(255, 125, 125, 125),
+                ),
+                right: BorderSide(
+                  width: 0.5,
+                  color: Color.fromARGB(255, 125, 125, 125),
+                ),
+              ),
+            ),
             height: 400,
             width: 350,
-            child: MapCanvas(),
+            child: const MapCanvas(),
+          ),
+          const SizedBox(
+            height: 30,
           ),
           Expanded(
             child: GeoTagList(geoTags: _storedTagPage),
