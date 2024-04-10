@@ -16,7 +16,7 @@ class LoadingPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Image.asset(
-                'assets/images/logo2.png',
+                'assets/images/logo.png',
                 height: 300,
               ),
               const SizedBox(
