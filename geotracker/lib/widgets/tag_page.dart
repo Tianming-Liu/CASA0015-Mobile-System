@@ -39,7 +39,7 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History Records'),
+        title: const Text('History Records',),
         actions: [
           IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add))
         ],
