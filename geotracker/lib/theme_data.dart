@@ -21,7 +21,7 @@ ThemeData geotrackerThemeData = ThemeData(
 
   ),
   colorScheme: const ColorScheme.light(
-    primary: Colors.white,
+    primary: Colors.black,
   ),
   // cardTheme: const CardTheme(
   //   color: Colors.white,

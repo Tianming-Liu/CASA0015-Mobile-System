@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geotracker/widgets/user_image_picker.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -16,14 +20,41 @@ class _AuthPageState extends State<AuthPage> {
   var _enteredEmail = '';
   var _enteredPassword = '';
 
-  void _submit() {
+  // Use async to handle the Future<UserCredentials>
+  void _submit() async {
     final _isValid = _form.currentState!.validate();
-    if (_isValid) {
-      _form.currentState!.save();
-      print(_enteredEmail);
-      print(_enteredPassword);
+
+    if (!_isValid) {
+      return;
+    }
+
+    _form.currentState!.save();
+    
+    try {
+      if (_isLogin) {
+        // Log user in
+        final UserCredentials = await _firebase.signInWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+      } else {
+        // Register user
+        final UserCredentials = await _firebase.createUserWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+      }
+    } on FirebaseAuthException catch (error) {
+        // Handle the error
+        if (error.code == 'email-already-in-use') {
+          //...
+        }
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message ?? 'Authentication failed.'),
+          ),
+        );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +85,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (!_isLogin) const UserImagePicker(),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Email Address',
@@ -119,7 +151,7 @@ class _AuthPageState extends State<AuthPage> {
                           fixedSize: MaterialStateProperty.all<Size>(
                               const Size(200, 40)),
                           backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(10, 132, 255, 1),
+                            const Color.fromRGBO(80, 7, 120, 1),
                           ), // Background Color
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               const EdgeInsets.all(5)), //

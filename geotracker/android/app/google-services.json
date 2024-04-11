@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1073230772088",
+    "project_id": "geotracker-83a50",
+    "storage_bucket": "geotracker-83a50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073230772088:android:30d3a19e8eb918ac3fba8d",
+        "android_client_info": {
+          "package_name": "cn.tianming.geotracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU2q6N5qmBeBtdD7TmXDFZwMsHBOHzQgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geotracker/models/geotag.dart';
 import 'package:geotracker/widgets/geotag_list/geotag_list.dart';
@@ -39,9 +40,17 @@ class _TagPageState extends State<TagPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History Records',),
+        title: const Text(
+          'History Records',
+        ),
         actions: [
-          IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add))
+          IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add)),
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
       body: Column(
