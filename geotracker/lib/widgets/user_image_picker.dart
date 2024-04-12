@@ -12,8 +12,11 @@ class UserImagePicker extends StatefulWidget {
 class _UserImagePickerState extends State<UserImagePicker> {
   File? _pickedImageFile;
 
-  void _pickImage() async {
-    final pickedImage = await ImagePicker().pickImage(
+  final ImagePicker _picker = ImagePicker();
+
+  // Method for picking an image from camera
+  void _pickImageFromCamera() async {
+    final XFile? pickedImage = await _picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 150,
@@ -26,7 +29,54 @@ class _UserImagePickerState extends State<UserImagePicker> {
     setState(() {
       _pickedImageFile = File(pickedImage.path);
     });
+  }
 
+  // Method for picking an image from gallery
+  void _pickImageFromGallery() async {
+    final XFile? pickedImage = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 150,
+    );
+    if (pickedImage == null) {
+      return;
+    }
+    setState(() {
+      _pickedImageFile = File(pickedImage.path);
+    });
+  }
+
+  // For users to choose the source of the image
+  void _showPicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              //相册
+              ListTile(
+                leading: const Icon(Icons.photo_album),
+                title: const Text("Choose from Album"),
+                onTap: () {
+                  _pickImageFromGallery();
+                  Navigator.of(context).pop();
+                },
+              ),
+              //相机
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Take from Camera"),
+                onTap: () {
+                  _pickImageFromCamera();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -36,10 +86,11 @@ class _UserImagePickerState extends State<UserImagePicker> {
         CircleAvatar(
           radius: 40,
           backgroundColor: Colors.grey,
-          foregroundImage: _pickedImageFile != null ? FileImage(_pickedImageFile!) : null,
+          foregroundImage:
+              _pickedImageFile != null ? FileImage(_pickedImageFile!) : null,
         ),
         TextButton.icon(
-          onPressed: _pickImage,
+          onPressed: _showPicker,
           icon: const Icon(Icons.image),
           label: const Text('Add Image'),
         ),

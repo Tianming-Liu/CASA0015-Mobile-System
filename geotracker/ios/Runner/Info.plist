@@ -49,5 +49,9 @@
     <string>We need the access to real time location</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>We need the access to real time location</string>
+	<key> NSCameraUsageDescription</key>
+	<string>We need the access to camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Example usage description</string>
 </dict>
 </plist>

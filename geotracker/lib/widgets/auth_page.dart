@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geotracker/widgets/user_image_picker.dart';
@@ -22,6 +24,7 @@ class _AuthPageState extends State<AuthPage> {
 
   // Use async to handle the Future<UserCredentials>
   void _submit() async {
+    
     final _isValid = _form.currentState!.validate();
 
     if (!_isValid) {
