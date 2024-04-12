@@ -14,6 +14,7 @@ class TagPage extends StatefulWidget {
 }
 
 class _TagPageState extends State<TagPage> {
+
   final List<GeoTag> _storedTagPage = [
     GeoTag(
       time: DateTime.now(),
@@ -29,10 +30,10 @@ class _TagPageState extends State<TagPage> {
     ),
   ];
 
-  void _addNewGeoTag() {
+  void _addNewGeoTag(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => const NewGeoTag(),
+      builder: (BuildContext context) => NewGeoTagBottom(mainContext: context),
     );
   }
 
@@ -44,7 +45,7 @@ class _TagPageState extends State<TagPage> {
           'History Records',
         ),
         actions: [
-          IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add)),
+          // IconButton(onPressed: _addNewGeoTag, icon: const Icon(Icons.add)),
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
@@ -79,6 +80,10 @@ class _TagPageState extends State<TagPage> {
             height: 400,
             width: 350,
             child: const MapCanvas(),
+          ),
+          IconButton(
+            onPressed: () => _addNewGeoTag(context),
+            icon: const Icon(Icons.add),
           ),
           const SizedBox(
             height: 30,

@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:geotracker/widgets/create_geodata/create_tag.dart';
 
-class NewGeoTag extends StatefulWidget {
-  const NewGeoTag({super.key});
+class NewGeoTagBottom extends StatelessWidget {
+  final BuildContext mainContext;
 
-  @override
-  State<NewGeoTag> createState() => _NewGeoTagState();
-}
+  NewGeoTagBottom({super.key, required this.mainContext});
 
-class _NewGeoTagState extends State<NewGeoTag> {
-  // A built-in class for handling User Input
-  // Attention: You need to add dispose methods to delete the Controller from cash!
-  final _noteController = TextEditingController();
-
-  ButtonStyle buttonStyleforNewTag = ButtonStyle(
+  final ButtonStyle buttonStyleforNewTag = ButtonStyle(
     fixedSize: MaterialStateProperty.all<Size>(const Size(200, 40)),
     backgroundColor: MaterialStateProperty.all<Color>(
       const Color.fromRGBO(80, 7, 120, 1),
@@ -25,28 +19,34 @@ class _NewGeoTagState extends State<NewGeoTag> {
     ),
   );
 
-  TextStyle textStyleforNewTag = const TextStyle(
+  final TextStyle textStyleforNewTag = const TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.w700,
     fontSize: 14,
   );
 
-  // A method called automatically by StatefulWidget, just like the initState and Build
-  @override
-  void dispose() {
-    _noteController.dispose();
-    super.dispose();
+  void _showCreateTagBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      // isScrollControlled: true,
+      builder: (BuildContext context) {
+        return const CreateTagPage();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+      padding: const EdgeInsets.fromLTRB(75, 32, 75, 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+              _showCreateTagBottomSheet(mainContext);
+            },
             style: buttonStyleforNewTag,
             child: Text(
               'Tag Current Location',
@@ -78,29 +78,12 @@ class _NewGeoTagState extends State<NewGeoTag> {
           const SizedBox(
             height: 5,
           ),
-          TextField(
-            controller: _noteController,
-            maxLength: 30,
-            keyboardType: TextInputType.text,
-            decoration: const InputDecoration(
-                labelText: 'Write some notes for your new record.'),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    print(_noteController.text);
-                  },
-                  child: const Text('Save Record'))
-            ],
-          )
         ],
       ),
     );
