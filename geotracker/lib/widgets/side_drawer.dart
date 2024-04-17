@@ -6,7 +6,7 @@ import 'package:geotracker/style/custom_text_style.dart';
 
 class SideDrawer extends StatefulWidget {
   final NetworkImage? userProfileImage;
-  final String userName;
+  final String? userName;
   final Function(String) onChangeStyle;
   const SideDrawer(
       {super.key,

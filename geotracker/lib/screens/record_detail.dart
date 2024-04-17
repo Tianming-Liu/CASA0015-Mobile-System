@@ -14,11 +14,9 @@ class RecordDetailPage extends StatelessWidget {
           geoTag.category.toString(),
         ),
       ),
-      body: Center(
-        child: Text(
-          geoTag.category.toString(),
-        ),
-      ),
+      body: Stack(
+        children: [Image.file(geoTag.image, fit: BoxFit.cover, width: double.infinity, height: double.infinity,)],
+      )
     );
   }
 }

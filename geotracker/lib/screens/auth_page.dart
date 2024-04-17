@@ -43,10 +43,11 @@ class _AuthPageState extends State<AuthPage> {
 
     _form.currentState!.save();
 
+    setState(() {
+      _isAuthenticating = true;
+    });
+
     try {
-      setState(() {
-        _isAuthenticating = true;
-      });
       if (_isLogin) {
         // Log user in
         // ignore: unused_local_variable

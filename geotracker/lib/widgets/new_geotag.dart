@@ -42,16 +42,14 @@ class NewGeoTagBottom extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ElevatedButton(
+          TextButton.icon(
+            icon: const Icon(Icons.pin_drop,color: Colors.white,size: 20,),
+            label: Text('Tag Current Location',style: textStyleforNewTag,),
             onPressed: () {
               Navigator.pop(context);
               _showCreateTagBottomSheet(mainContext);
             },
             style: buttonStyleforNewTag,
-            child: Text(
-              'Tag Current Location',
-              style: textStyleforNewTag,
-            ),
           ),
           const SizedBox(
             height: 5,

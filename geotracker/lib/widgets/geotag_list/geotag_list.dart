@@ -16,6 +16,10 @@ class GeoTagList extends StatelessWidget {
       itemCount: geoTags.length,
       // itemBuilder: (ctx, index) => GeoTagItem(geoTags[index]),
       itemBuilder: (ctx, index) => ListTile(
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundImage: FileImage(geoTags[index].image),
+        ),
         title: Text(
           geoTags[index].category.toString().split('.').last.toUpperCase(),
         ),

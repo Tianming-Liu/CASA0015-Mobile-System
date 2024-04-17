@@ -154,7 +154,7 @@ class _TagPageState extends State<TagPage> {
               overlayColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 if (states.contains(MaterialState.hovered)) {
-                  return const Color.fromRGBO(80, 7, 120, 0.5); // 悬浮时的背景颜色，紫色变浅
+                  return const Color.fromRGBO(80, 7, 120, 0.5);
                 }
                 return Colors.transparent;
               }),

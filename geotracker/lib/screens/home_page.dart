@@ -73,9 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
         if (documentSnapshot.exists) {
           setState(() {
             final userProfileImageUrl =
-                documentSnapshot.get('image_url') as String;
+                documentSnapshot.get('image_url').toString();
             userProfileImage = NetworkImage(userProfileImageUrl);
-            userName = documentSnapshot.get('username') as String;
+            userName = documentSnapshot.get('username').toString();
           });
         }
       });
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         width: 200,
         backgroundColor: Colors.white,
         child: SideDrawer(
-            userName: userName!,
+            userName: userName,
             userProfileImage: userProfileImage,
             onChangeStyle: changeMapStyle),
       ),
@@ -105,21 +105,24 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: GNav(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 gap: 8,
                 activeColor: Colors.white,
                 iconSize: 24,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                duration: const Duration(milliseconds: 800),
-                tabBackgroundColor: Colors.grey,
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
+                duration: const Duration(milliseconds: 500),
+                tabBackgroundColor: const Color.fromARGB(255, 109, 109, 109),
                 tabs: const [
                   GButton(
-                    icon: LineIcons.home,
-                    text: 'Home',
+                    icon: LineIcons.mapPin,
+                    text: 'Track',
+                    iconSize: 25,
                   ),
                   GButton(
                     icon: LineIcons.heart,
-                    text: 'Likes',
+                    text: 'Records',
+                    iconSize: 18,
                   ),
                 ],
                 selectedIndex: _selectedIndex,

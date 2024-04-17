@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geotracker/screens/loading_page.dart';
-// import 'package:geotracker/screens/tag_page.dart';
+
 import 'dart:async';
 import 'package:geotracker/screens/auth_page.dart';
 import 'package:geotracker/theme_data.dart';
@@ -32,7 +32,7 @@ class _StartPageState extends State<StartPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const FirebaseWaiting();
             }
-            if (snapshot.hasData) {
+            if (snapshot.hasData) { 
               return const MyHomePage();
             }
             return const AuthPage();

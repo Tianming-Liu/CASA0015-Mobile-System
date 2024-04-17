@@ -52,6 +52,6 @@
 	<key> NSCameraUsageDescription</key>
 	<string>We need the access to camera</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Example usage description</string>
+	<string>We need the access to album</string>
 </dict>
 </plist>
