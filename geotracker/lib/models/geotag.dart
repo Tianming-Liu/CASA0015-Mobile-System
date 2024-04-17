@@ -6,7 +6,7 @@ const uuid = Uuid();
 
 final formatter = DateFormat.yMd().add_jm();
 
-enum Category { food, travel, leisure, work }
+enum Category { food, travel, leisure, work, cycling, running}
 
 enum TagType { place, route }
 
