@@ -11,8 +11,8 @@ class GeoTagItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(
-        horizontal: 50,
-        vertical: 10,
+        horizontal: 30,
+        vertical: 5,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
