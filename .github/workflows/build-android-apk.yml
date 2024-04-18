@@ -20,6 +20,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3     # Checkout the Repository on the Virtual Machine
 
+      - name: Replace API Key in AndroidManifest.xml
+        run: |
+          sed -i 's/${MAPS_API_KEY}/${{ secrets.MAP_API_KEY }}/g' app/src/main/AndroidManifest.xml
+
       - name: Set up JDK              # Setup JAVA to build the Android APK for us
         uses: actions/setup-java@v3
         with:
