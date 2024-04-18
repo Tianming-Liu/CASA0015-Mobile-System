@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geotracker/provider/map_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 // import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-// Load Customized Map Style
 
-class MapCanvas extends StatefulWidget {
+class MapCanvas extends ConsumerStatefulWidget {
   final String mapStyle;
   const MapCanvas({super.key, required this.mapStyle});
   @override
-  State<MapCanvas> createState() => _MapCanvasState();
+  ConsumerState<MapCanvas> createState() => _MapCanvasState();
 }
 
-class _MapCanvasState extends State<MapCanvas> with AutomaticKeepAliveClientMixin {
-
-  @override
-  bool get wantKeepAlive => true;
-
+class _MapCanvasState extends ConsumerState<MapCanvas> {
   late GoogleMapController mapController;
-
-  // final LatLng _center = const LatLng(51.506734, 0.037341);
-  // final LatLng _uclEastCoord = const LatLng(51.537928, -0.011617);
 
   bool showMarker = false;
 
@@ -79,7 +73,9 @@ class _MapCanvasState extends State<MapCanvas> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    
+    final locationData = ref.watch(mapStateProvider);
+
     return currentLocation == null
         ? const Center(child: Text('Loading'))
         : GoogleMap(
@@ -95,19 +91,16 @@ class _MapCanvasState extends State<MapCanvas> with AutomaticKeepAliveClientMixi
             //     points: polylineCoords,
             //   ),
             // },
-            // markers: {
-            //   Marker(
-            //     markerId: const MarkerId('90032399'),
-            //     icon: BitmapDescriptor.defaultMarker,
-            //     position: _uclEastCoord,
-            //   ),
-            //   Marker(
-            //     markerId: const MarkerId('Apple_California'),
-            //     icon: BitmapDescriptor.defaultMarker,
-            //     position: LatLng(
-            //         currentLocation!.latitude!, currentLocation!.longitude!),
-            //   )
-            // },
+            markers: locationData != null
+                ? {
+                    Marker(
+                      markerId: const MarkerId('Apple_California'),
+                      icon: BitmapDescriptor.defaultMarker,
+                      position: LatLng(currentLocation!.latitude!,
+                          currentLocation!.longitude!),
+                    )
+                  }
+                : {},
           );
   }
 }

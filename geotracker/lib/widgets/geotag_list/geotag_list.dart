@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geotracker/models/geotag.dart';
 import 'package:geotracker/screens/record_detail.dart';
-
+import 'package:geotracker/style/custom_text_style.dart';
 class GeoTagList extends StatelessWidget {
   const GeoTagList({
     super.key,
@@ -21,8 +21,14 @@ class GeoTagList extends StatelessWidget {
           backgroundImage: FileImage(geoTags[index].image),
         ),
         title: Text(
-          geoTags[index].category.toString().split('.').last.toUpperCase(),
+          geoTags[index].decodedAddress,
+          style: CustomTextStyle.mediumBoldBlackText,
         ),
+        subtitle: Text(
+          geoTags[index].time.toString(),
+          style: CustomTextStyle.smallBoldGreyText,
+        ),
+        trailing: geoTags[index].categoryIcon,
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(

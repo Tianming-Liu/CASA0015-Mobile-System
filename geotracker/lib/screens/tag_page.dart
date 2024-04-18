@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:location/location.dart';
 
 import 'package:geotracker/style/map_style.dart';
-import 'package:geotracker/widgets/new_geotag.dart';
+import 'package:geotracker/widgets/tag_method_picker.dart';
 import 'package:geotracker/widgets/map_canvas.dart';
 
 class TagPage extends StatefulWidget {
@@ -14,10 +15,23 @@ class TagPage extends StatefulWidget {
 }
 
 class _TagPageState extends State<TagPage> {
+
+  LocationData? pickedLocation;
+
+  bool showMap = true; // Show Map or Location Pick Image
+
+  void handleLocationData(LocationData location) {
+    setState(() {
+      pickedLocation = location;
+      showMap = false;
+    });
+  }
+
   void _addNewGeoTag(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => NewGeoTagBottom(mainContext: context),
+      isDismissible: false,
+      builder: (BuildContext context) => TagMethodPicker(mainContext: context,handleLocation: handleLocationData,),
     );
   }
 
@@ -44,7 +58,6 @@ class _TagPageState extends State<TagPage> {
   }
 
   // Get User Information for future use
-
   NetworkImage? userProfileImage;
   String? userName;
 

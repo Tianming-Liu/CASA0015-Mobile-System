@@ -32,6 +32,12 @@ class CustomTextStyle {
     fontSize: 14,
     fontWeight: FontWeight.w900,
   );
+  static TextStyle mediumBoldBlackText = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: const Color.fromARGB(255, 0, 0, 0),
+    fontSize: 14,
+    fontWeight: FontWeight.w900,
+  );
   static TextStyle boldTitle = TextStyle(
     fontFamily: GoogleFonts.oswald().fontFamily,
     color: const Color.fromARGB(255, 50, 50, 50),
