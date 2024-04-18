@@ -70,13 +70,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: flutter-apk
-          path: build/app/outputs/flutter-apk/*.apk
+          path: geotracker/build/app/outputs/flutter-apk/*.apk
 
       - name: Save APPBUNDLE to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: flutter-appbundle
-          path: build/app/outputs/bundle/release/*.aab
+          path: geotracker/build/app/outputs/bundle/release/*.aab
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
