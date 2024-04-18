@@ -76,7 +76,7 @@ jobs:
           tag: "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
           # token: ${{ secrets.PERSONAL_RELEASE_TOKEN }}
 
-  # TODO:  Upload to Firebase - for App Distribution
+  # TODO:  Upload to Firebase - For App Distribution
   # Release job, upload the apk or aab to Firebase App Distribution
   # release:
   #   name: Sends Release APK to Firebase
