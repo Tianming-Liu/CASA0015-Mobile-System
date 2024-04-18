@@ -29,16 +29,7 @@ jobs:
         with:
           java-version: '11'
           distribution: microsoft
-
-      #  Decode keystore File from repository secrets
-      #  Keep the keystore file private; don't check it into public source control!
-      
-      #- name: Decode KeyStore File (.jks)            
-      #  run: echo "${{ secrets.KEYSTORE_JKS_PROD }}" | base64 --decode > android/keystore.jks
-
-      #- name: Decode android/key.properties
-      #  run: echo "${{ secrets.KEY_PROPERTIES_PROD }}" | base64 --decode > android/key.properties
-
+          
       - name: Install yq
         uses: mikefarah/yq@v4.42.1
 
