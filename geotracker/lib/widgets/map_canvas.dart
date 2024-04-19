@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geotracker/provider/location_picker.dart';
 import 'package:geotracker/provider/map_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-// import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geotracker/widgets/create_geodata/create_tag.dart';
 
 class MapCanvas extends ConsumerStatefulWidget {
   final String mapStyle;
@@ -30,22 +31,6 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     setState(() {
       currentLocation = locationData;
     });
-
-    // location.onLocationChanged.listen((newLoc) {
-    //   currentLocation = newLoc;
-    //   polylineCoords
-    //       .add(LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
-    //   mapController.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(
-    //         target:
-    //             LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-    //         // zoom: 13,
-    //       ),
-    //     ),
-    //   );
-    //   setState(() {});
-    // });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -67,14 +52,41 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     }
   }
 
-  // void _onGetCenter() async {
-  //   LatLng center = await mapController.get
-  // }
+  void _showCreateTagBottomSheet(
+      BuildContext context, LocationData locationData) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext context) {
+        return CreateTagPage(locationData: locationData);
+      },
+    );
+  }
+
+  void _handleTap(LatLng tapped) {
+    print("Tapped location: ${tapped.latitude}, ${tapped.longitude}");
+    ref.read(pickerStateProvider.notifier).pickLocation(tapped);
+    Map<String, double> locationMap = {
+      'latitude': tapped.latitude,
+      'longitude': tapped.longitude,
+      'accuracy': 0.0,
+      'altitude': 0.0,
+      'speed': 0.0,
+      'speed_accuracy': 0.0,
+      'heading': 0.0,
+      'time': DateTime.now().millisecondsSinceEpoch.toDouble(),
+    };
+    LocationData displayLocation = LocationData.fromMap(locationMap);
+    
+    ref.read(mapStateProvider.notifier).updateLocation(displayLocation);
+    _showCreateTagBottomSheet(context, displayLocation);
+  }
 
   @override
   Widget build(BuildContext context) {
-    
-    final locationData = ref.watch(mapStateProvider);
+    final locationDataForDisplay = ref.watch(mapStateProvider);
+
+    final isPicking = ref.watch(pickerStateProvider.select((state) => state.isPicking));
 
     return currentLocation == null
         ? const Center(child: Text('Loading'))
@@ -85,19 +97,14 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
                   currentLocation!.latitude!, currentLocation!.longitude!),
               zoom: 13,
             ),
-            // polylines: {
-            //   Polyline(
-            //     polylineId: const PolylineId('Route'),
-            //     points: polylineCoords,
-            //   ),
-            // },
-            markers: locationData != null
+            onTap: isPicking ? _handleTap : null,
+            markers: locationDataForDisplay != null
                 ? {
                     Marker(
                       markerId: const MarkerId('Apple_California'),
                       icon: BitmapDescriptor.defaultMarker,
-                      position: LatLng(currentLocation!.latitude!,
-                          currentLocation!.longitude!),
+                      position: LatLng(locationDataForDisplay.latitude!,
+                          locationDataForDisplay.longitude!),
                     )
                   }
                 : {},

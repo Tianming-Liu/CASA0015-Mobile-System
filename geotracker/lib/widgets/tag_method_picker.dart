@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geotracker/provider/location_picker.dart';
 import 'package:geotracker/provider/map_state.dart';
 import 'package:location/location.dart';
 
@@ -80,8 +81,6 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
       _isGettingLocation = false;
     });
 
-    // print(locationData!.latitude);
-    // print(locationData!.longitude);
     // Only proceed if location data is not null
     if (locationData != null) {
       // Make sure to use context of current widget tree
@@ -101,6 +100,48 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
       },
     );
   }
+
+  // void _showPickerBottomSheet(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isDismissible: false,
+  //     backgroundColor: Color.fromARGB(255, 240, 240, 240),
+  //     barrierColor: Colors.white.withOpacity(0),
+  //     builder: (BuildContext context) {
+  //       return Padding(
+  //         padding: const EdgeInsets.fromLTRB(120, 32, 120, 16),
+  //         child: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Text(
+  //               'Pick The Location.',
+  //               style: CustomTextStyle.mediumBoldBlackText,
+  //             ),
+  //             TextButton(
+  //               style: ButtonStyle(
+  //                 backgroundColor: MaterialStateProperty.all<Color>(
+  //                   const Color.fromARGB(255, 192, 192, 192),
+  //                 ),
+  //                 padding: MaterialStateProperty.all<EdgeInsets>(
+  //                   const EdgeInsets.all(5),
+  //                 ),
+  //                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                   RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                   ),
+  //                 ),
+  //               ),
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: const Text('Cancel'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +169,11 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
             height: 5,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              // _showPickerBottomSheet(context);
+              ref.read(pickerStateProvider.notifier).startPicking();
+            },
             style: buttonStyleforNewTag,
             child: Text(
               'Tag Other Location',

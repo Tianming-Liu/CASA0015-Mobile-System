@@ -21,11 +21,11 @@ class GeoTagList extends StatelessWidget {
           backgroundImage: FileImage(geoTags[index].image),
         ),
         title: Text(
-          geoTags[index].decodedAddress,
+          geoTags[index].decodedAddress.substring(0, geoTags[index].decodedAddress.length - 11),
           style: CustomTextStyle.mediumBoldBlackText,
         ),
         subtitle: Text(
-          geoTags[index].time.toString(),
+          geoTags[index].time.toString().substring(0,19),
           style: CustomTextStyle.smallBoldGreyText,
         ),
         trailing: geoTags[index].categoryIcon,

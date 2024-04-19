@@ -191,12 +191,15 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                             else if (_decodedAddress != null)
                               Text(
                                 _decodedAddress!
-                                    .substring(0, _decodedAddress!.length - 4),
+                                    .substring(0, _decodedAddress!.length - 11),
                                 textAlign: TextAlign.left,
                                 style: CustomTextStyle.smallBoldBlackText,
                               ),
+                              const SizedBox(
+                                height: 5,
+                              ),
                             Text(
-                              '${widget.locationData.latitude.toString()}, ${widget.locationData.longitude.toString()}',
+                              '${widget.locationData.latitude.toString().substring(0,10)}, ${widget.locationData.longitude.toString().substring(0,10)}',
                               style: CustomTextStyle.smallBoldGreyText,
                             ),
                           ],
@@ -258,7 +261,7 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                   ],
                 ),
                 const SizedBox(
-                  width: 30,
+                  width: 35,
                 ),
                 //Image Input Widget for the user to select an image
                 ImageInput(
@@ -274,7 +277,7 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
             // Image Input
             TextField(
               controller: _noteController,
-              maxLength: 30,
+              maxLength: 100,
               textCapitalization: TextCapitalization.sentences,
               autocorrect: true,
               enableSuggestions: true,
