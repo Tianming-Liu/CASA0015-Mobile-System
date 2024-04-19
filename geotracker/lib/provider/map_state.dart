@@ -16,3 +16,4 @@ class MapStateNotifier extends StateNotifier<LocationData?> {
 final mapStateProvider = StateNotifierProvider<MapStateNotifier, LocationData?>((ref) {
   return MapStateNotifier();
 });
+
