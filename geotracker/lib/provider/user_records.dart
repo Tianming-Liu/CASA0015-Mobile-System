@@ -39,6 +39,7 @@ class UserRecordNotifier extends StateNotifier<List<GeoTag>> {
   }
 
   Future<void> loadRecords() async {
+    // ignore: avoid_print
     print('begin loadRecords');
     final db = await _getDataBase();
     final data = await db.query('user_places');
