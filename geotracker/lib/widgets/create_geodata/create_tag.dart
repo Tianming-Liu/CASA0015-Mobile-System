@@ -199,7 +199,7 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                                 height: 5,
                               ),
                             Text(
-                              '${widget.locationData.latitude.toString().substring(0,10)}, ${widget.locationData.longitude.toString().substring(0,10)}',
+                              '${widget.locationData.latitude.toString().substring(0,6)}, ${widget.locationData.longitude.toString().substring(0,6)}',
                               style: CustomTextStyle.smallBoldGreyText,
                             ),
                           ],
