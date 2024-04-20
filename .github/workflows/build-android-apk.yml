@@ -29,6 +29,9 @@ jobs:
         with:
           java-version: '11'
           distribution: microsoft
+
+      - name: Create .env file
+        run: echo "MAP_API_KEY=${{ secrets.MAP_API_KEY }}" > .env
           
       - name: Install yq
         uses: mikefarah/yq@v4.42.1
