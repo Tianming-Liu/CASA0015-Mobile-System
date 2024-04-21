@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geotracker/provider/location_picker.dart';
 import 'package:geotracker/provider/map_state.dart';
+import 'package:geotracker/style/custom_text_style.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:geotracker/widgets/create_geodata/create_tag.dart';
+import 'package:geotracker/provider/user_records.dart';
+import 'package:geotracker/provider/map_style.dart';
+import 'package:geotracker/models/geotag.dart';
 
 class MapCanvas extends ConsumerStatefulWidget {
-  final String mapStyle;
-  const MapCanvas({super.key, required this.mapStyle});
+  const MapCanvas({super.key});
   @override
   ConsumerState<MapCanvas> createState() => _MapCanvasState();
 }
@@ -16,13 +19,7 @@ class MapCanvas extends ConsumerStatefulWidget {
 class _MapCanvasState extends ConsumerState<MapCanvas> {
   late GoogleMapController mapController;
 
-  bool showMarker = false;
-
-  Marker? centerMarker;
-
   LocationData? currentLocation;
-
-  List<LatLng> polylineCoords = [];
 
   void getCurrentLocation() async {
     Location location = Location();
@@ -35,21 +32,56 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    mapController.setMapStyle(widget.mapStyle);
+    final initialStyle = ref.read(mapStyleProvider);
+    mapController.setMapStyle(initialStyle);
   }
+
+  late Future<void> _recordsFuture;
+
+  Set<Marker> dataBaseMarkers = {};
 
   @override
   void initState() {
-    getCurrentLocation();
     super.initState();
+    getCurrentLocation();
+    _recordsFuture = ref.read(userRecordProvider.notifier).loadRecords();
+    // loadMarkers();
+    _recordsFuture.then((_) {
+      loadMarkers();
+    });
   }
 
-  @override
-  void didUpdateWidget(covariant MapCanvas oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.mapStyle != widget.mapStyle) {
-      mapController.setMapStyle(widget.mapStyle);
+  BitmapDescriptor getMarkerIconByCategory(Category category) {
+    switch (category) {
+      case Category.leisure:
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure);
+      case Category.work:
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+      case Category.cycling:
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+      case Category.photo:
+        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+      default:
+        return BitmapDescriptor.defaultMarker;
     }
+  }
+
+  void loadMarkers() async {
+    final userRecords = ref.watch(userRecordProvider);
+    setState(() {
+      dataBaseMarkers = userRecords
+          .map((record) => Marker(
+                markerId: MarkerId(record.id),
+                icon: getMarkerIconByCategory(record.category),
+                position: LatLng(
+                    record.location.latitude!, record.location.longitude!),
+                infoWindow: InfoWindow(
+                  title: record.info,
+                  snippet: record.formattedDate,
+                ),
+              ))
+          .toSet();
+    });
   }
 
   void _showCreateTagBottomSheet(
@@ -64,7 +96,6 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
   }
 
   void _handleTap(LatLng tapped) {
-    print("Tapped location: ${tapped.latitude}, ${tapped.longitude}");
     ref.read(pickerStateProvider.notifier).pickLocation(tapped);
     Map<String, double> locationMap = {
       'latitude': tapped.latitude,
@@ -77,7 +108,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
       'time': DateTime.now().millisecondsSinceEpoch.toDouble(),
     };
     LocationData displayLocation = LocationData.fromMap(locationMap);
-    
+
     ref.read(mapStateProvider.notifier).updateLocation(displayLocation);
     _showCreateTagBottomSheet(context, displayLocation);
   }
@@ -86,10 +117,31 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
   Widget build(BuildContext context) {
     final locationDataForDisplay = ref.watch(mapStateProvider);
 
-    final isPicking = ref.watch(pickerStateProvider.select((state) => state.isPicking));
+    loadMarkers();
+
+    final isPicking =
+        ref.watch(pickerStateProvider.select((state) => state.isPicking));
+    
+    ref.listen<String>(mapStyleProvider, (_, newStyle) {
+      mapController.setMapStyle(newStyle);
+      setState(() {
+      });
+    });
 
     return currentLocation == null
-        ? const Center(child: Text('Loading'))
+        ? Center(
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(
+                color: Color.fromARGB(255, 100, 100, 100),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text('Map Loading...', style: CustomTextStyle.mediumBoldGreyText),
+            ],
+          ))
         : GoogleMap(
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
@@ -107,7 +159,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
                           locationDataForDisplay.longitude!),
                     )
                   }
-                : {},
+                : dataBaseMarkers,
           );
   }
 }

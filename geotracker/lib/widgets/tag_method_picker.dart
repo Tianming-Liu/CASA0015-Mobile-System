@@ -21,9 +21,9 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
   LocationData? locationData;
 
   final ButtonStyle buttonStyleforNewTag = ButtonStyle(
-    fixedSize: MaterialStateProperty.all<Size>(const Size(200, 40)),
+    fixedSize: MaterialStateProperty.all<Size>(const Size(200, 30)),
     backgroundColor: MaterialStateProperty.all<Color>(
-      const Color.fromRGBO(80, 7, 120, 1),
+      const Color.fromARGB(255, 81, 7, 120),
     ), // Background Color
     padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(5)), //
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -101,52 +101,10 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
     );
   }
 
-  // void _showPickerBottomSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isDismissible: false,
-  //     backgroundColor: Color.fromARGB(255, 240, 240, 240),
-  //     barrierColor: Colors.white.withOpacity(0),
-  //     builder: (BuildContext context) {
-  //       return Padding(
-  //         padding: const EdgeInsets.fromLTRB(120, 32, 120, 16),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Text(
-  //               'Pick The Location.',
-  //               style: CustomTextStyle.mediumBoldBlackText,
-  //             ),
-  //             TextButton(
-  //               style: ButtonStyle(
-  //                 backgroundColor: MaterialStateProperty.all<Color>(
-  //                   const Color.fromARGB(255, 192, 192, 192),
-  //                 ),
-  //                 padding: MaterialStateProperty.all<EdgeInsets>(
-  //                   const EdgeInsets.all(5),
-  //                 ),
-  //                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-  //                   RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(10.0),
-  //                   ),
-  //                 ),
-  //               ),
-  //               onPressed: () {
-  //                 Navigator.pop(context);
-  //               },
-  //               child: const Text('Cancel'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     Widget previewContent = Padding(
-      padding: const EdgeInsets.fromLTRB(75, 32, 75, 16),
+      padding: const EdgeInsets.fromLTRB(95, 32, 95, 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -168,14 +126,18 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
           const SizedBox(
             height: 5,
           ),
-          ElevatedButton(
+          TextButton.icon(
+            icon: const Icon(
+              Icons.share_location,
+              color: Colors.white,
+              size: 20,
+            ),
             onPressed: () {
               Navigator.of(context).pop();
-              // _showPickerBottomSheet(context);
               ref.read(pickerStateProvider.notifier).startPicking();
             },
             style: buttonStyleforNewTag,
-            child: Text(
+            label: Text(
               'Tag Other Location',
               style: textStyleforNewTag,
             ),
@@ -183,11 +145,16 @@ class _TagMethodPickerState extends ConsumerState<TagMethodPicker> {
           const SizedBox(
             height: 5,
           ),
-          ElevatedButton(
+          TextButton.icon(
+            icon: const Icon(
+              Icons.route,
+              color: Colors.white,
+              size: 20,
+            ),
             onPressed: () {},
             style: buttonStyleforNewTag,
-            child: Text(
-              'Track New Route',
+            label: Text(
+              'Route (developing)',
               style: textStyleforNewTag,
             ),
           ),

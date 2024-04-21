@@ -14,6 +14,12 @@ class CustomTextStyle {
     fontSize: 12,
     fontWeight: FontWeight.w400,
   );
+  static TextStyle tinyBoldGreyText = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: const Color.fromARGB(255, 100, 100, 100),
+    fontSize: 8,
+    fontWeight: FontWeight.w900,
+  );
   static TextStyle smallBoldGreyText = TextStyle(
     fontFamily: GoogleFonts.roboto().fontFamily,
     color: const Color.fromARGB(255, 100, 100, 100),
@@ -23,6 +29,12 @@ class CustomTextStyle {
   static TextStyle smallBoldBlackText = TextStyle(
     fontFamily: GoogleFonts.roboto().fontFamily,
     color: const Color.fromARGB(255, 0, 0, 0),
+    fontSize: 12,
+    fontWeight: FontWeight.w900,
+  );
+  static TextStyle smallBoldWhiteText = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    color: const Color.fromARGB(255, 255, 255, 255),
     fontSize: 12,
     fontWeight: FontWeight.w900,
   );

@@ -4,23 +4,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:geotracker/style/custom_text_style.dart';
 
-class SideDrawer extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geotracker/provider/user_records.dart';
+import 'package:geotracker/provider/user_info.dart';
+import 'package:geotracker/provider/map_style.dart';
+
+class SideDrawer extends ConsumerStatefulWidget {
   final NetworkImage? userProfileImage;
   final String? userName;
-  final Function(String) onChangeStyle;
-  const SideDrawer(
-      {super.key,
-      required this.userName,
-      required this.userProfileImage,
-      required this.onChangeStyle});
+  const SideDrawer({
+    super.key,
+    required this.userName,
+    required this.userProfileImage,
+  });
 
   @override
-  State<SideDrawer> createState() => _SideDrawerState();
+  ConsumerState<SideDrawer> createState() => _SideDrawerState();
 }
 
-class _SideDrawerState extends State<SideDrawer> {
+class _SideDrawerState extends ConsumerState<SideDrawer> {
+  String currentMapStyle = 'light-grey';
   @override
   Widget build(BuildContext context) {
+    final userInfo = ref.watch(userInfoProvider);
+    final userRecord = ref.watch(userRecordProvider);
+
     return ListView(
       children: [
         const SizedBox(
@@ -30,7 +38,8 @@ class _SideDrawerState extends State<SideDrawer> {
         CircleAvatar(
           radius: 40,
           backgroundColor: Colors.grey,
-          foregroundImage: widget.userProfileImage,
+          foregroundImage:
+              userInfo != null ? NetworkImage(userInfo.userProfileImage) : null,
         ),
         const SizedBox(
           height: 20,
@@ -38,12 +47,33 @@ class _SideDrawerState extends State<SideDrawer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('@${widget.userName}',
+            Text(userInfo != null ? userInfo.userName : widget.userName ?? '',
                 style: CustomTextStyle.smallBoldBlackText),
           ],
         ),
         const SizedBox(
-          height: 50,
+          height: 30,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const SizedBox(
+              width: 10,
+            ),
+            Text('History:', style: CustomTextStyle.smallBoldGreyText),
+            const SizedBox(
+              width: 30,
+            ),
+            Text('Added  ',
+                style: CustomTextStyle.smallBoldBlackText,),
+            Text(userRecord.length.toString(),
+                style: CustomTextStyle.boldTitle),
+            Text('  records',
+                style: CustomTextStyle.smallBoldBlackText),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
         ),
         Row(
           children: [
@@ -63,7 +93,7 @@ class _SideDrawerState extends State<SideDrawer> {
                   // Add a dropdown button to change the map style
                   DropdownButton<String>(
                 isExpanded: true,
-                value: 'light-grey',
+                value: currentMapStyle,
                 items: const [
                   DropdownMenuItem(
                     value: 'light-grey',
@@ -79,7 +109,12 @@ class _SideDrawerState extends State<SideDrawer> {
                   ),
                 ],
                 onChanged: (String? value) {
-                  widget.onChangeStyle(value!);
+                  if (value != null) {
+                    setState(() {
+                      currentMapStyle = value;
+                      ref.read(mapStyleProvider.notifier).setMapStyle(value);
+                    });
+                  }
                 },
                 style: CustomTextStyle.smallBoldBlackText,
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -87,6 +122,24 @@ class _SideDrawerState extends State<SideDrawer> {
               ),
             ),
           ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+          child: TextButton.icon(
+            icon: const Icon(Icons.delete, color: Colors.white,size: 20,),
+            onPressed: () {
+              ref.read(userRecordProvider.notifier).clearUserRecords();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Local data cleared')));
+            },
+            style: TextButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 81, 7, 120)),
+            label: Text('Clear Local Data',
+                style: CustomTextStyle.smallBoldWhiteText),
+          ),
         ),
         const SizedBox(
           height: 300,
@@ -108,7 +161,10 @@ class _SideDrawerState extends State<SideDrawer> {
             Text('Logout', style: CustomTextStyle.smallBoldGreyText),
             IconButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut().then((_) {
+                  ref.read(userRecordProvider.notifier).clearTempRecords();
+                  ref.read(userInfoProvider.notifier).clearUser();
+                });
               },
               icon: const Icon(Icons.logout),
             ),

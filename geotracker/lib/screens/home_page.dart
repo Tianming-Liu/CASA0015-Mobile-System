@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:geotracker/screens/tag_page.dart';
@@ -9,23 +10,25 @@ import 'package:geotracker/widgets/side_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geotracker/style/map_style.dart';
+import 'package:geotracker/provider/user_info.dart';
+import 'package:geotracker/provider/user_records.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   int _selectedIndex = 0;
 
-  static final List<Widget> _bodyOptions = <Widget>[
-    const TagPage(),
-    const HistoryPage(),
-  ];
+  List<Widget> get _bodyOptions => [
+        TagPage(userProfileImage: userProfileImage),
+        const HistoryPage(),
+      ];
 
   static final List<AppBar> _appBarOptions = <AppBar>[
     tagAppBar,
@@ -60,6 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
   NetworkImage? userProfileImage;
   String? userName;
 
+  // void updateUserInfo(String userName, String userProfileImageUrl) async {
+  //   try {
+  //     final File userProfileImage = await DefaultCacheManager().getSingleFile(userProfileImageUrl);
+  //     // ignore: unnecessary_null_comparison
+  //     if (userProfileImage != null) {
+  //       ref.read(userInfoProvider.notifier).setUser(userName, userProfileImage);
+  //     } else {
+  //       print("Downloaded file is null.");
+  //     }
+  //   } catch (e) {
+  //     print('Error loading image file: $e');
+  //   }
+  // }
+
   @override
   void initState() {
     super.initState();
@@ -76,9 +93,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 documentSnapshot.get('image_url').toString();
             userProfileImage = NetworkImage(userProfileImageUrl);
             userName = documentSnapshot.get('username').toString();
+            ref
+                .read(userInfoProvider.notifier)
+                .setUser(userName!, userProfileImageUrl);
           });
         }
       });
+      ref.read(userRecordProvider.notifier).loadRecords();
     }
   }
 
@@ -91,8 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
         child: SideDrawer(
             userName: userName,
-            userProfileImage: userProfileImage,
-            onChangeStyle: changeMapStyle),
+            userProfileImage: userProfileImage,),
       ),
       body: Center(
         child: _bodyOptions.elementAt(_selectedIndex),
@@ -105,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: GNav(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 gap: 8,
                 activeColor: Colors.white,
                 iconSize: 24,
@@ -115,12 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 tabBackgroundColor: const Color.fromARGB(255, 109, 109, 109),
                 tabs: const [
                   GButton(
-                    icon: LineIcons.mapPin,
+                    icon: LineIcons.globe,
                     text: 'Track',
                     iconSize: 25,
                   ),
                   GButton(
-                    icon: LineIcons.heart,
+                    icon: LineIcons.shoePrints,
                     text: 'Records',
                     iconSize: 18,
                   ),

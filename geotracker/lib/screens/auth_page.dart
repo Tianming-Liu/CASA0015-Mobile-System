@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geotracker/style/custom_text_style.dart';
 import 'package:geotracker/widgets/user_image_picker.dart';
 
 final _firebase = FirebaseAuth.instance;
@@ -263,7 +264,7 @@ class _AuthPageState extends State<AuthPage> {
                             _isLogin
                                 ? 'Create an account'
                                 : 'I already have an account.',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: CustomTextStyle.smallBoldGreyText,
                           ),
                         ),
                     ],

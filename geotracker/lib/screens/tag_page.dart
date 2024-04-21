@@ -6,13 +6,14 @@ import 'package:location/location.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geotracker/provider/location_picker.dart';
 
-import 'package:geotracker/style/map_style.dart';
 import 'package:geotracker/widgets/tag_method_picker.dart';
 import 'package:geotracker/widgets/map_canvas.dart';
 import 'package:geotracker/style/custom_text_style.dart';
 
 class TagPage extends ConsumerStatefulWidget {
-  const TagPage({super.key});
+  const TagPage({super.key, required this.userProfileImage});
+
+  final NetworkImage? userProfileImage;
 
   @override
   ConsumerState<TagPage> createState() => _TagPageState();
@@ -41,37 +42,17 @@ class _TagPageState extends ConsumerState<TagPage> {
     );
   }
 
-  String mapStyle = MapStyle().silver;
-
-  void changeMapStyle(String style) {
-    switch (style) {
-      case 'light-grey':
-        setState(() {
-          mapStyle = MapStyle().silver;
-        });
-        break;
-      case 'light-green':
-        setState(() {
-          mapStyle = MapStyle().lightGreen;
-        });
-        break;
-      case 'dark-blue':
-        setState(() {
-          mapStyle = MapStyle().darkDefault;
-        });
-        break;
-    }
-  }
-
   // Get User Information for future use
   NetworkImage? userProfileImage;
   String? userName;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      userId = user.uid;
       FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -124,26 +105,27 @@ class _TagPageState extends ConsumerState<TagPage> {
           ),
           height: 500,
           width: 360,
-          child: MapCanvas(
-            mapStyle: mapStyle,
-          ),
+          child: const MapCanvas(),
         ),
         const SizedBox(
           height: 15,
         ),
         isPicking
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(120, 32, 120, 16),
+                padding: const EdgeInsets.fromLTRB(50, 15, 50, 5),
                 child: Column(
                   children: [
                     Text(
-                      'Pick The Location.',
+                      'Tab on the map to pick location.',
                       style: CustomTextStyle.mediumBoldBlackText,
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 192, 192, 192),
+                          const Color.fromARGB(255, 81, 7, 120),
                         ),
                         padding: MaterialStateProperty.all<EdgeInsets>(
                           const EdgeInsets.all(5),
@@ -159,7 +141,7 @@ class _TagPageState extends ConsumerState<TagPage> {
                         ref.read(pickerStateProvider.notifier).stopPicking();
                         ref.read(mapStateProvider.notifier).clearLocation();
                       },
-                      child: const Text('Cancel'),
+                      child: Text('Cancel', style: CustomTextStyle.mediumBoldWhiteText),
                     ),
                   ],
                 ),

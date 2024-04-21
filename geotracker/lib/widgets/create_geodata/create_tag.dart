@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field, avoid_print
+
 import 'dart:io';
 import 'dart:convert';
 
@@ -16,6 +18,7 @@ import 'package:geotracker/style/custom_text_style.dart';
 import 'package:geotracker/models/geotag.dart';
 import 'package:geotracker/provider/user_records.dart';
 import 'package:geotracker/widgets/create_geodata/image_input.dart';
+import 'package:geotracker/models/airqualityinfo.dart';
 
 class CreateTagPage extends ConsumerStatefulWidget {
   final LocationData locationData;
@@ -32,7 +35,15 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
 
   String? _decodedAddress;
 
+  String? _airQuality;
+
+  String? _airQualityForDisplay;
+
   bool _isLoading = false;
+
+  bool _isFetchingAirQuality = false;
+
+  String? apiKey;
 
   @override
   void dispose() {
@@ -47,7 +58,7 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
 
     final lat = locationData.latitude;
     final lng = locationData.longitude;
-    String apiKey = dotenv.env['MAP_API_KEY'] ?? '';
+    apiKey = dotenv.env['MAP_API_KEY'] ?? '';
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$apiKey');
     final responce = await http.get(url);
@@ -57,7 +68,6 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
     final geoCodeData = json.decode(responce.body);
     if (geoCodeData['results'].isNotEmpty) {
       _decodedAddress = geoCodeData['results'][0]['formatted_address'];
-      // ignore: avoid_print
       print(_decodedAddress);
     } else {
       _decodedAddress = "No Location Found";
@@ -68,10 +78,69 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
     });
   }
 
+  void getAirQualityData(LocationData locationData) async {
+    setState(() {
+      _isFetchingAirQuality = true;
+    });
+
+    final lat = locationData.latitude!;
+    final lng = locationData.longitude!;
+    // String apiKey = dotenv.env['AIR_API_KEY'] ?? '';
+    Uri apiUrl = Uri.parse(
+        'https://airquality.googleapis.com/v1/history:lookup?key=$apiKey');
+
+    print('calling api, $apiUrl');
+
+    try {
+      var response = await http.post(
+        apiUrl,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'hours': 24,
+          'location': {
+            'latitude': lat,
+            'longitude': lng,
+          },
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var airQualityData = json.decode(response.body);
+        _airQuality = response.body;
+        if (airQualityData['hoursInfo'].isNotEmpty) {
+          List<AirQualityInfo> hoursInfo = (airQualityData['hoursInfo'] as List)
+              .map((item) => AirQualityInfo.fromJson(item))
+              .toList();
+          AirQualityInfo firstHourInfo = hoursInfo[0];
+          _airQualityForDisplay = firstHourInfo.indexes[0].category;
+          for (var hour in hoursInfo) {
+            print("DateTime: ${hour.dateTime}");
+            for (var index in hour.indexes) {
+              print("AQI: ${index.aqi}, Category: ${index.category}");
+            }
+          }
+        } else {
+          _airQuality = "No Data Found";
+        }
+      } else {
+        print('Failed to fetch air quality data: ${response.body}');
+      }
+    } catch (e) {
+      print('Exception when calling API: $e');
+    }
+
+    setState(() {
+      _isFetchingAirQuality = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     getDecodeAddress(widget.locationData);
+    getAirQualityData(widget.locationData);
   }
 
   void _saveData() async {
@@ -95,11 +164,13 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
       if (!mounted) return; // Check if the widget is still active
 
       ref.read(userRecordProvider.notifier).addPlaceRecord(
+          user.uid,
           id,
           dropDownType,
           TagType.place,
           time,
           enteredNote,
+          _airQuality!,
           widget.locationData,
           _decodedAddress!,
           _selectedImage!);
@@ -128,7 +199,8 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
         'id': id,
         'category': enteredType,
         'note': enteredNote,
-        'time': time,
+        'time': time.toIso8601String(),
+        'aqi': _airQuality,
         'location':
             'lat:${widget.locationData.latitude.toString()},lng:${widget.locationData.longitude.toString()}',
         'address': _decodedAddress,
@@ -139,7 +211,6 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
 
       Navigator.pop(context);
     } catch (e) {
-      // ignore: avoid_print
       print("Error during Firebase operation: $e");
     }
   }
@@ -177,31 +248,67 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                           style: CustomTextStyle.smallBoldGreyText,
                         ),
                         const SizedBox(
-                          width: 12,
+                          width: 16,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (_isLoading)
                               const SizedBox(
-                                height: 20,
-                                width: 20,
+                                height: 10,
+                                width: 50,
                                 child: LinearProgressIndicator(),
                               )
                             else if (_decodedAddress != null)
+                              SizedBox(
+                                width: 142,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    _decodedAddress!,
+                                    textAlign: TextAlign.left,
+                                    style: CustomTextStyle.smallBoldBlackText,
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '${widget.locationData.latitude.toString().substring(0, 6)}, ${widget.locationData.longitude.toString().substring(0, 6)}',
+                              style: CustomTextStyle.smallBoldGreyText,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'AirQuality: ',
+                          style: CustomTextStyle.smallBoldGreyText,
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (_isFetchingAirQuality)
+                              const SizedBox(
+                                height: 10,
+                                width: 50,
+                                child: LinearProgressIndicator(),
+                              )
+                            else if (_airQualityForDisplay != null)
                               Text(
-                                _decodedAddress!
-                                    .substring(0, _decodedAddress!.length - 11),
+                                _airQualityForDisplay!,
                                 textAlign: TextAlign.left,
                                 style: CustomTextStyle.smallBoldBlackText,
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                            Text(
-                              '${widget.locationData.latitude.toString().substring(0,6)}, ${widget.locationData.longitude.toString().substring(0,6)}',
-                              style: CustomTextStyle.smallBoldGreyText,
-                            ),
                           ],
                         ),
                       ],
@@ -248,7 +355,11 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                                     (Category value) {
                               return DropdownMenuItem<Category>(
                                 value: value,
-                                child: Text(value.toString().split('.').last),
+                                child: Text(value
+                                    .toString()
+                                    .split('.')
+                                    .last
+                                    .toUpperCase()),
                               );
                             }).toList(),
                             borderRadius:
@@ -265,10 +376,15 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                 ),
                 //Image Input Widget for the user to select an image
                 ImageInput(
-                  onSelectedImage: (image) {
+                  onPickImage: (image) {
                     _selectedImage = image;
                   },
                 ),
+                // UserImagePicker(
+                //   onPickImage: (image) {
+                //     _selectedImage = image;
+                //   },
+                // ),
               ],
             ),
             // const SizedBox(
@@ -299,11 +415,12 @@ class _CreateTagPageState extends ConsumerState<CreateTagPage> {
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      _saveData();
-                      ref.read(mapStateProvider.notifier).clearLocation();
-                    },
-                    child: const Text('Save Record')),
+                  onPressed: () {
+                    _saveData();
+                    ref.read(mapStateProvider.notifier).clearLocation();
+                  },
+                  child: const Text('Save Record'),
+                ),
               ],
             ),
           ],

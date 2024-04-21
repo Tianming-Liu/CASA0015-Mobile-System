@@ -26,6 +26,7 @@ class GeoTag {
       required this.tagType,
       required this.time,
       required this.info,
+      required this.aqi,
       required this.location,
       required this.decodedAddress,
       required this.image});
@@ -38,6 +39,7 @@ class GeoTag {
   // record the creating time of each tag
   final DateTime time;
   final String info;
+  final String aqi;
   final LocationData location;
   final String decodedAddress;
   final File image;
