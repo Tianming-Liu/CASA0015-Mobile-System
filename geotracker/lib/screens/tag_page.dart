@@ -112,7 +112,7 @@ class _TagPageState extends ConsumerState<TagPage> {
         ),
         isPicking
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(50, 15, 50, 5),
+                padding: const EdgeInsets.fromLTRB(50, 10, 50, 0),
                 child: Column(
                   children: [
                     Text(
@@ -120,7 +120,7 @@ class _TagPageState extends ConsumerState<TagPage> {
                       style: CustomTextStyle.mediumBoldBlackText,
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     TextButton(
                       style: ButtonStyle(
@@ -141,7 +141,8 @@ class _TagPageState extends ConsumerState<TagPage> {
                         ref.read(pickerStateProvider.notifier).stopPicking();
                         ref.read(mapStateProvider.notifier).clearLocation();
                       },
-                      child: Text('Cancel', style: CustomTextStyle.mediumBoldWhiteText),
+                      child: Text('Cancel',
+                          style: CustomTextStyle.mediumBoldWhiteText),
                     ),
                   ],
                 ),
@@ -156,7 +157,6 @@ class _TagPageState extends ConsumerState<TagPage> {
                   ),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
-                // alignment: Alignment.bottomRight,
                 child: IconButton(
                   onPressed: () => _addNewGeoTag(context),
                   icon: const Icon(
@@ -199,9 +199,44 @@ class _TagPageState extends ConsumerState<TagPage> {
                   ),
                 ),
               ),
-        const SizedBox(
-          height: 5,
-        ),
+        !isPicking
+            ? Column(
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(Icons.location_on,
+                          color: Color.fromARGB(255, 0, 87, 255)),
+                      Icon(Icons.location_on,
+                          color: Color.fromARGB(255, 134, 0, 160)),
+                      Icon(Icons.location_on,
+                          color: Color.fromARGB(255, 27, 163, 0)),
+                      Icon(Icons.location_on,
+                          color: Color.fromARGB(255, 117, 92, 62)),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Leisure',
+                          style: CustomTextStyle.smallBoldBlackText),
+                      Text('Work', style: CustomTextStyle.smallBoldBlackText),
+                      Text('Cycling',
+                          style: CustomTextStyle.smallBoldBlackText),
+                      Text('Photo', style: CustomTextStyle.smallBoldBlackText),
+                    ],
+                  ),
+                ],
+              )
+            : const SizedBox(
+                height: 0,
+              ),
       ],
     );
   }

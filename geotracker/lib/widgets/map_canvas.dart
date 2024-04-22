@@ -54,13 +54,13 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
   BitmapDescriptor getMarkerIconByCategory(Category category) {
     switch (category) {
       case Category.leisure:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure);
+        return BitmapDescriptor.defaultMarkerWithHue(220);
       case Category.work:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+        return BitmapDescriptor.defaultMarkerWithHue(290);
       case Category.cycling:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+        return BitmapDescriptor.defaultMarkerWithHue(110);
       case Category.photo:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+        return BitmapDescriptor.defaultMarkerWithHue(33);
       default:
         return BitmapDescriptor.defaultMarker;
     }
@@ -82,6 +82,33 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
               ))
           .toSet();
     });
+  }
+
+  Widget iconWithLabel(Category category, String label) {
+    return Column(
+      children: [
+        Icon(
+          Icons.location_on,  // 使用简单的Material图标代替自定义图标
+          color: markerColorByCategory(category),
+        ),
+        Text(label, style: const TextStyle(fontSize: 12)),
+      ],
+    );
+  }
+
+  Color markerColorByCategory(Category category) {
+    switch (category) {
+      case Category.leisure:
+        return const Color.fromARGB(255, 0, 87, 255); // Azure
+      case Category.work:
+        return const Color.fromARGB(255, 134, 0, 160); // Blue
+      case Category.cycling:
+        return const Color.fromARGB(255, 27, 163, 0); // Green
+      case Category.photo:
+        return const Color.fromARGB(255, 255, 140, 0); // Red
+      default:
+        return Colors.grey; // Default
+    }
   }
 
   void _showCreateTagBottomSheet(
@@ -153,7 +180,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
             markers: locationDataForDisplay != null
                 ? {
                     Marker(
-                      markerId: const MarkerId('Apple_California'),
+                      markerId: const MarkerId('Picked Location'),
                       icon: BitmapDescriptor.defaultMarker,
                       position: LatLng(locationDataForDisplay.latitude!,
                           locationDataForDisplay.longitude!),

@@ -35,11 +35,10 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Places Records',
-            style: CustomTextStyle.mediumBoldGreyText),
+            style: CustomTextStyle.mediumBoldGreyText,textAlign: TextAlign.start,),
         actions: <Widget>[
           TextButton(
             onPressed: syncRecords,
-
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -54,7 +53,8 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
           )
         ],
       ),
-      body: FutureBuilder(
+      body: 
+      FutureBuilder(
         future: _recordsFuture,
         builder: (context, snapshot) =>
             snapshot.connectionState == ConnectionState.waiting
