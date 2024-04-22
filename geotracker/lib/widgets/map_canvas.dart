@@ -88,7 +88,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     return Column(
       children: [
         Icon(
-          Icons.location_on,  // 使用简单的Material图标代替自定义图标
+          Icons.location_on, // 使用简单的Material图标代替自定义图标
           color: markerColorByCategory(category),
         ),
         Text(label, style: const TextStyle(fontSize: 12)),
@@ -148,11 +148,10 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
 
     final isPicking =
         ref.watch(pickerStateProvider.select((state) => state.isPicking));
-    
+
     ref.listen<String>(mapStyleProvider, (_, newStyle) {
       mapController.setMapStyle(newStyle);
-      setState(() {
-      });
+      setState(() {});
     });
 
     return currentLocation == null

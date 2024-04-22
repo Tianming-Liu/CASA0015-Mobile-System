@@ -136,6 +136,7 @@ class UserRecordNotifier extends StateNotifier<List<GeoTag>> {
           'tagType': 'TagType.place',
           'time': data['time'],
           'info': data['note'],
+          'aqi': data['aqi'],
           'lat': extractLatitude(data['location']),
           'lng': extractLongitude(data['location']),
           'address': data['address'],
