@@ -2,8 +2,7 @@
 
 **GeoTracker** is an application designed to provide a platform for people to interact with geographic information in our daily activities. Enhance your interaction with the world aroundthrough detailed environmental data and personal annotations.
 
-Check the [LandingPage](https://github.com/Tianming-Liu/CASA0015-Mobile-System/releases](https://tianming-liu.github.io/CASA0015-Mobile-System/
-) to know more about GeoTracker features.
+Check the [LandingPage](https://tianming-liu.github.io/CASA0015-Mobile-System/) to know more about GeoTracker features.
 
 <br>
 <div align=center>
