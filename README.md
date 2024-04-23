@@ -66,6 +66,14 @@ GeoTracker is built with a number of open-source frameworks and libraries. Below
 
 For complete information on all the dependencies and their versions, see the `pubspec.yaml` file in the geotracker folder.
 
+## Acknowledgments
+
+This project, "GeoTracker," utilizes some example code snapshots from the "Flutter Complete Guide" course by Academind, available publicly on GitHub. Specific aspects of the application, particularly related to the data management workflow, were inspired by the examples provided in this course.
+
+You can access the course materials directly [here](https://github.com/academind/flutter-complete-guide-course-resources/tree/main).
+
+I would like to express my gratitude to the course instructors and Academind for making these valuable resources available, which have significantly aided in the development of this project.
+
 ##  Contact Details
 
 I'd love to collaborate with app users to make GeoTracker even better for everyone. Whether you have ideas for new features, suggestions for improvements, or want to contribute to the project, i'm eager to hear from you.
