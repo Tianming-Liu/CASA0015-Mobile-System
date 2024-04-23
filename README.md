@@ -1,12 +1,18 @@
 # GeoTracker
 
-**GeoTracker** is an application designed to provide a platform for people to interact with geographic information in our daily activities. 
+**GeoTracker** is an application designed to provide a platform for people to interact with geographic information in our daily activities. Enhance your interaction with the world aroundthrough detailed environmental data and personal annotations.
 
-<img src="docs/images/screen_01.png" alt="App Screenshot 1" width="100" /> <img src="docs/images/screen_02.png" alt="App Screenshot 2" width="100" /> <img src="docs/images/screen_05.png" alt="App Screenshot 3" width="100" /> <img src="docs/images/screen_03.png" alt="App Screenshot 4" width="100" /> <img src="docs/images/screen_04.png" alt="App Screenshot 4" width="100" />
+<br>
+<div align=center>
+  <img src="docs/images/screen_01.png" alt="App Screenshot 1" width="150" /> <img src="docs/images/screen_02.png" alt="App Screenshot 2" width="150" /> <img src="docs/images/screen_05.png" alt="App Screenshot 3" width="150" /> <img src="docs/images/screen_03.png" alt="App Screenshot 4" width="150" /> <img src="docs/images/screen_04.png" alt="App Screenshot 4" width="150" />
+</div>
+<br>
 
 **Not just data**, GeoTracker enables you to personalize your environmental interaction. Annotate any location on the planet with real-time notes and images, capturing your moments and thoughts precisely where and when they happen.
 
-![UI Design](src/ui_wireframe.png)
+<div align=center>
+  <img src="src/ui_wireframe.png" alt="App Screenshot 1" width="750" />
+</div>
 
 Crafted for clarity and ease of use, GeoTracker’s modern UI design puts the information you need at your fingertips. Our interface harmonizes with your environmental exploration, delivering both the depth of data and the simplicity of design.
 
