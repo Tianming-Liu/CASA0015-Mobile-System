@@ -21,10 +21,18 @@ Crafted for clarity and ease of use, GeoTracker’s modern UI design puts the in
 ## Features
 
 - **Personal Annotation**: With GeoTracker, you can mark any location on the planet with notes and images. Whether you're documenting your travels or making note of local environmental conditions, GeoTracker makes it easy.
+  
+<div align=center>
+  <img src="src/pick_location.gif" alt="Environmental Data Tracking" width="200" /> <img src="src/current_location.gif" alt="Get Current Location" width="200" />
+</div>
 
 - **Environmental Data Tracking**: GeoTracker records the past 24 hours of Air Quality Data, retrieved via Google API, for your referenced location. Annotate your map with environmental insights and contribute to a healthier planet.
 
 - **Cross-Device Data Access**: Your annotated data is securely stored both locally and on the cloud with Google Firebase, allowing for reliable access across multiple devices.
+
+<div align=center>
+  <img src="src/record_details.gif" alt="Environmental Data Tracking" width="200" /> <img src="src/data_sychronize.gif" alt="Cross-Device Data Access" width="200" />
+</div>
 
 ## Installation
 
